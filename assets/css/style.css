@@ -1,0 +1,61 @@
+:root{
+    --theme-primary : #218380;
+}
+*{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.bg-theme-primary{
+    background-color: var(--theme-primary) !important;
+    color: white !important;
+}
+.font-size-n{
+    font-size: 16px;
+}
+.font-size-h{
+    font-size: 24px;
+}
+
+.navbar .nav-link{
+    color: white !important;
+    cursor: pointer;
+}
+
+section{
+    display: flex;
+    height: calc(100vh - 100px);
+    justify-content: center;
+    align-items: center;
+}
+.text-box{
+    box-shadow: rgb(210, 210, 210) 7px 5px 6px;
+    border-color: rgb(210, 210, 210) !important;
+    border-radius: 30px;
+    color: black !important;
+}
+.text-box h2{
+    font-weight: bold;
+}
+.text-box .btn{
+    border-radius: 10px;
+}
+.text-box .btn:hover{
+    background-color: rgb(100, 100, 100) !important;
+}
+#quiz>div{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+#highscores p{
+    margin: 0px 20px;
+    
+}
+#highscores button{
+    margin-top: 20px;
+}
+
+
+#quiz, #result, #highscores{
+    display: none;
+}
+
