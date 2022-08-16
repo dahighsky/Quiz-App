@@ -52,23 +52,25 @@
         <div class="text-box border border-2 bg-white p-5 m-3">
             <h2 class="font-size-h pb-2">All done!</h2>
             <p class="font-size-n">Your final score is <span id="show-score">X</span></p>
-            <form>
+            <div>
                 <label for="initials">Enter initials: </label>
-                <input type="text" style="width: 100px;">
-                <input type="submit" class="btn bg-theme-primary py-3">
-            </form>
+                <input type="text" style="width: 100px;" name="intials" id="initials">
+                <button class="btn bg-theme-primary py-3" id="save-user">Submit</button>
+            </div>
         </div>
     </section>
 
     <section id="highscores">
         <div class="text-box border border-2 bg-white p-5 m-3">
             <h2 class="font-size-h pb-2">Highscores</h2>
+            <div id="scores">
             <p class="font-size-n">aaas</p>            
             <p class="font-size-n">aaas</p>
             <p class="font-size-n">aaas</p>            
             <p class="font-size-n">aaas</p>
-            <button class="btn bg-theme-primary py-3">Go Back</button>
-            <button class="btn bg-theme-primary py-3">Clear Highscores</button>
+            </div>
+            <button class="btn bg-theme-primary py-3" id="go-back">Go Back</button>
+            <button class="btn bg-theme-primary py-3" id="clear-scores">Clear Highscores</button>
         </div>
     </section id="intro">
 
