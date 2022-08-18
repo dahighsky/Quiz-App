@@ -53,69 +53,72 @@ function quiz(){
   let question = document.getElementById("quest");
   let opt = document.querySelectorAll(".quest-opt")
   let result = document.getElementById("check")
+  // function newQuestion(){
+  //   qIndex = 0
+  //   while(qIndex < questions.length ){
 
-  newQuestion()
-
-  function newQuestion(){
-    qIndex = 0
-    while(qIndex < questions.length ){
-
-      state = false
-      console.log(question[0])
-      question.innerHTML = questions[qIndex].questionText
-      console.log("question added")
-
-      opt.forEach(function(text, index){   //adding options from the options array 
-        opt[index].innerText = questions[qIndex].options[index]
-        console.log(`option ${questions[qIndex].options[index]} added`)
-
-        opt[index].addEventListener("click", function(){   //adding event listener on each 
-          if(index == questions[qIndex].answer){
-            result.innerText = "Correct!"
-            score++
-            console.log("CORRECT")
-            state = true            
-          }
-          else{
-            result.innerText = "Incorrect!"
-            console.log("INCORRRECT")
-            state = true
-          }
-        })
-      })
-      console.log(score)
-    }
-    displayScore(score)
-  }
-
-  // function newQuestion(questionIndex = 0){
-  //   if(questionIndex < questions.length){
-  //     question.innerHTML = questions[questionIndex].questionText
+  //     state = false
+  //     console.log(question[0])
+  //     question.innerHTML = questions[qIndex].questionText
   //     console.log("question added")
-  //     opt.forEach(function(text, index){
-  //       opt[index].innerText = questions[questionIndex].options[index]
-  //       console.log("iteration check 2", questionIndex)
-  //       console.log(`option ${questions[questionIndex].options[index]} added`)
-  //       opt[index].addEventListener("click", function(){
-  //         if(index == questions[questionIndex].answer){
+
+  //     opt.forEach(function(text, index){   //adding options from the options array 
+  //       opt[index].innerText = questions[qIndex].options[index]
+  //       console.log(`option ${questions[qIndex].options[index]} added`)
+
+  //       opt[index].addEventListener("click", function(){   //adding event listener on each 
+  //         if(index == questions[qIndex].answer){
   //           result.innerText = "Correct!"
   //           score++
   //           console.log("CORRECT")
-            
+  //           state = true            
   //         }
   //         else{
   //           result.innerText = "Incorrect!"
   //           console.log("INCORRRECT")
-            
+  //           state = true
   //         }
   //       })
   //     })
   //     console.log(score)
   //   }
-  //   else{
-  //     displayScore(score)
-  //   }
-  // }  
+  //   displayScore(score)
+  // }
+
+  function newQuestion(questionIndex = 0){
+    console.log("start")
+    if(questionIndex < questions.length){
+      question.innerHTML = questions[questionIndex].questionText
+      console.log(`question ${questionIndex + 1} added`)
+
+      opt.forEach(function(text, index){
+        opt[index].innerText = questions[questionIndex].options[index]
+        console.log(`option ${questions[questionIndex].options[index]} added`)
+      })
+
+      opt.forEach(function(text, index){
+        opt[index].addEventListener("click", function(){
+          if(index == questions[questionIndex].answer){
+            result.innerText = "Correct!"
+            score++
+            console.log("CORRECT")
+          }
+          else{
+            result.innerText = "Incorrect!"
+            console.log("INCORRRECT")
+          }
+          questionIndex++
+          newQuestion(questionIndex)
+        })
+      })
+      console.log(score)
+    }
+    else{
+      displayScore(score)
+    }
+  }
+  
+  newQuestion()
 }
 
 function displayScore(score){
