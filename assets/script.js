@@ -37,158 +37,300 @@ const questions = [
       options: ["1. break", "2. stop", "3. halt", "4. exit"],
       answer: 0,
     },
-  ];
-
-let users = [
-  {
-    userName: "Aakash",
-    userScore: 69
-  }
 ]
 
-var score = 0;
 
-function quiz(){
-  console.log("here")
-  let question = document.getElementById("quest");
-  let opt = document.querySelectorAll(".quest-opt")
-  let result = document.getElementById("check")
-  // function newQuestion(){
-  //   qIndex = 0
-  //   while(qIndex < questions.length ){
+class Question{
+  constructor(qIndex){
+    this.qIndex = qIndex
+    this.question = questions[qIndex].questionText
+    this.option1 = questions[qIndex].options[0]
+    this.option2 = questions[qIndex].options[1]
+    this.option3 = questions[qIndex].options[2]
+    this.option4 = questions[qIndex].options[3]
+    this.result = "a"
+  }
 
-  //     state = false
-  //     console.log(question[0])
-  //     question.innerHTML = questions[qIndex].questionText
-  //     console.log("question added")
+  questBox = document.getElementById("quiz")
 
-  //     opt.forEach(function(text, index){   //adding options from the options array 
-  //       opt[index].innerText = questions[qIndex].options[index]
-  //       console.log(`option ${questions[qIndex].options[index]} added`)
+  build(){
+    document.getElementById("intro").style.display = "none"
+    document.getElementById("quiz").style.display = "flex"
+    this.questBox.innerHTML = `<div class="text-box border border-2 bg-white p-5 m-3">
+                              <h2 class="font-size-h pb-2" id="quest">${this.question}</h2>
+                              <button class="btn bg-theme-primary py-3 my-1 text-start quest-opt" >${this.option1}</button>
+                              <button class="btn bg-theme-primary py-3 my-1 text-start quest-opt" >${this.option2}</button>
+                              <button class="btn bg-theme-primary py-3 my-1 text-start quest-opt" >${this.option3}</button>
+                              <button class="btn bg-theme-primary py-3 my-1 text-start quest-opt" >${this.option4}</button>
 
-  //       opt[index].addEventListener("click", function(){   //adding event listener on each 
-  //         if(index == questions[qIndex].answer){
-  //           result.innerText = "Correct!"
-  //           score++
-  //           console.log("CORRECT")
-  //           state = true            
-  //         }
-  //         else{
-  //           result.innerText = "Incorrect!"
-  //           console.log("INCORRRECT")
-  //           state = true
-  //         }
-  //       })
-  //     })
-  //     console.log(score)
-  //   }
-  //   displayScore(score)
-  // }
+                              <hr>
+                              <p id="check"></p>
+                          </div>`
+    this.check()
+  }
 
-  function newQuestion(questionIndex = 0){
-    console.log("start")
-    if(questionIndex < questions.length){
-      question.innerHTML = questions[questionIndex].questionText
-      console.log(`question ${questionIndex + 1} added`)
+  destroy(){
+    this.questBox.innerHTML = ""
+  }
 
-      opt.forEach(function(text, index){
-        opt[index].innerText = questions[questionIndex].options[index]
-        console.log(`option ${questions[questionIndex].options[index]} added`)
-      })
+  check(){
+    var options = document.querySelectorAll(".quest-opt")
+    console.log("in check")
+    let answer = questions[this.qIndex].answer
+    let result = this.result
 
-      opt.forEach(function(text, index){
-        opt[index].addEventListener("click", function(){
-          if(index == questions[questionIndex].answer){
-            result.innerText = "Correct!"
-            score++
+    options.forEach(function(value,index){
+      console.log("for each in")
+        value.addEventListener("click", function(){   //adding event listener on each 
+          
+          if(index == answer){
             console.log("CORRECT")
+            result = true
           }
+
           else{
-            result.innerText = "Incorrect!"
             console.log("INCORRRECT")
-          }
-          questionIndex++
-          newQuestion(questionIndex)
+            result = false
+          }          
         })
+
       })
-      console.log(score)
-    }
-    else{
-      displayScore(score)
+
+      if( result == true || result == false){
+        this.destroy()
+      }
+
+  }
+
+  scoring(){
+    if(this.result == true){
+      score.count++
     }
   }
-  
-  newQuestion()
+
+
 }
 
-function displayScore(score){
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("result").style.display = "flex";
-  console.log(score)
-  document.getElementById("show-score").innerText = score;
-  document.getElementById("initials").addEventListener("keyup", function(event){
-    uName = event.target.value
-    console.log(uName)
-  })
+const score = {
+  count : 0,
+  print: function(){console.log(count)},
+  userName : null,
+};
 
-  document.getElementById("save-user").addEventListener("click", function(){
-    console.log(uName + "user here")
-    if(uName){
-      addUser(uName, score)
-      console.log("User here")
-    }
-  })
-}
-
-function addUser(uName, score){
-  users.push({userName: uName,
-              userScore: score})
-  showHighscores()
-}
-
-document.getElementById("leaderboard").addEventListener("click", showHighscores)
-
-function showHighscores(){
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("check").style.display = "none";
-  document.getElementById("result").style.display = "none";
-  document.getElementById("highscores").style.display = "flex";
-  
-  var scoreList = ""
-
-  users.forEach(function(value, index){
-    rank = index + 1
-    scoreEntry = `${rank}. ${users[index].userName} - ${users[index].userScore} <br>`
-    scoreList = scoreList + scoreEntry
-  })
-
-  scoresView = document.getElementById("scores")
-  scoresView.innerHTML = scoreList
-
-  document.getElementById("go-back").addEventListener("click", restart)
-  document.getElementById("clear-scores").addEventListener("click", clearHighscores)
-}
-
-function clearHighscores(){
-  users = [
-    {
-      userName: "Aakash",
-      userScore: 69
-    }
-  ]
-  showHighscores()
-}
-
-function restart(){
-  document.getElementById("intro").style.display = "flex";
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("check").style.display = "none";
-  document.getElementById("result").style.display = "none";
-  document.getElementById("highscores").style.display = "none";
-}
 function startQuiz(){
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("quiz").style.display = "flex";
-  quiz()
+  question = new Question(0)
+  question.build()
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// let users = [
+//   {
+//     userName: "Aakash",
+//     userScore: 69
+//   }
+// ]
+
+// var score = 0;
+
+// function quiz(){
+//   console.log("here")
+//   let question = document.getElementById("quest");
+//   let opt = document.querySelectorAll(".quest-opt")
+//   let result = document.getElementById("check")
+//   // function newQuestion(){
+//   //   qIndex = 0
+//   //   while(qIndex < questions.length ){
+
+//   //     state = false
+//   //     console.log(question[0])
+//   //     question.innerHTML = questions[qIndex].questionText
+//   //     console.log("question added")
+
+//   //     opt.forEach(function(text, index){   //adding options from the options array 
+//   //       opt[index].innerText = questions[qIndex].options[index]
+//   //       console.log(`option ${questions[qIndex].options[index]} added`)
+
+//   //       opt[index].addEventListener("click", function(){   //adding event listener on each 
+//   //         if(index == questions[qIndex].answer){
+//   //           result.innerText = "Correct!"
+//   //           score++
+//   //           console.log("CORRECT")
+//   //           state = true            
+//   //         }
+//   //         else{
+//   //           result.innerText = "Incorrect!"
+//   //           console.log("INCORRRECT")
+//   //           state = true
+//   //         }
+//   //       })
+//   //     })
+//   //     console.log(score)
+//   //   }
+//   //   displayScore(score)
+//   // }
+
+//   function newQuestion(questionIndex = 0){
+//     console.log("start")
+//     if(questionIndex < questions.length){
+//       question.innerHTML = questions[questionIndex].questionText
+//       console.log(`question ${questionIndex + 1} added`)
+
+//       opt.forEach(function(text, index){
+//         opt[index].innerText = questions[questionIndex].options[index]
+//         console.log(`option ${questions[questionIndex].options[index]} added`)
+//       })
+
+//       opt.forEach(function(text, index){
+//         opt[index].addEventListener("click", function(){
+//           if(index == questions[questionIndex].answer){
+//             result.innerText = "Correct!"
+//             score++
+//             console.log("CORRECT")
+//           }
+//           else{
+//             result.innerText = "Incorrect!"
+//             console.log("INCORRRECT")
+//           }
+//           questionIndex++
+//           newQuestion(questionIndex)
+//         })
+//       })
+//       console.log(score)
+//     }
+//     else{
+//       displayScore(score)
+//     }
+//   }
+  
+//   newQuestion()
+// }
+
+// function displayScore(score){
+//   document.getElementById("quiz").style.display = "none";
+//   document.getElementById("result").style.display = "flex";
+//   console.log(score)
+//   document.getElementById("show-score").innerText = score;
+//   document.getElementById("initials").addEventListener("keyup", function(event){
+//     uName = event.target.value
+//     console.log(uName)
+//   })
+
+//   document.getElementById("save-user").addEventListener("click", function(){
+//     console.log(uName + "user here")
+//     if(uName){
+//       addUser(uName, score)
+//       console.log("User here")
+//     }
+//   })
+// }
+
+// function addUser(uName, score){
+//   users.push({userName: uName,
+//               userScore: score})
+//   showHighscores()
+// }
+
+// document.getElementById("leaderboard").addEventListener("click", showHighscores)
+
+// function showHighscores(){
+//   document.getElementById("intro").style.display = "none";
+//   document.getElementById("quiz").style.display = "none";
+//   document.getElementById("check").style.display = "none";
+//   document.getElementById("result").style.display = "none";
+//   document.getElementById("highscores").style.display = "flex";
+  
+//   var scoreList = ""
+
+//   users.forEach(function(value, index){
+//     rank = index + 1
+//     scoreEntry = `${rank}. ${users[index].userName} - ${users[index].userScore} <br>`
+//     scoreList = scoreList + scoreEntry
+//   })
+
+//   scoresView = document.getElementById("scores")
+//   scoresView.innerHTML = scoreList
+
+//   document.getElementById("go-back").addEventListener("click", restart)
+//   document.getElementById("clear-scores").addEventListener("click", clearHighscores)
+// }
+
+// function clearHighscores(){
+//   users = [
+//     {
+//       userName: "Aakash",
+//       userScore: 69
+//     }
+//   ]
+//   showHighscores()
+// }
+
+// function restart(){
+//   document.getElementById("intro").style.display = "flex";
+//   document.getElementById("quiz").style.display = "none";
+//   document.getElementById("check").style.display = "none";
+//   document.getElementById("result").style.display = "none";
+//   document.getElementById("highscores").style.display = "none";
+// }
+// function startQuiz(){
+//   document.getElementById("intro").style.display = "none";
+//   document.getElementById("quiz").style.display = "flex";
+//   quiz()
+// }
